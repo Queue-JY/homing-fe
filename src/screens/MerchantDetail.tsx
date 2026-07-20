@@ -98,15 +98,15 @@ const DEMO_OTHER_MAP: Record<string, DemoMerchant[]> = {
   ],
 };
 
-const PAGE_BG = '#ffffff';
-const CARD_GRADIENT = 'linear-gradient(135deg,#EAFBE0,#F3FBEF)';
-const PRIMARY = '#64ac7e'; // 진한 그린 (텍스트/포인트)
-const ACCENT_BG = '#DDF3CE'; // 활성 상태 배경
-const MUTED = '#8FA88C'; // 보조 텍스트
-const BORDER_SOFT = '#E1EEDA';
-const CTA_BG = '#FFF6CC'; // 대체 가게 찾기 버튼 (그린 위 포인트 컬러)
-const LOCK_BG = '#EDF2EA';
-const LOCK_ICON = '#9FAF9A';
+const PAGE_BG = '#FFFFFF';
+const CARD_GRADIENT = 'linear-gradient(135deg,#ECF9F2 0%, #F5FCF8 100%)';
+const PRIMARY = '#6EB58C';
+const MUTED = '#7E8B84';
+const ACCENT_BG = '#DDF3CE';
+const BORDER_SOFT = '#E8EFEA';
+const CTA_BG = '#FFF4C7';
+const LOCK_BG = '#F4F5F4';
+const LOCK_ICON = '#9EA7A1';
 
 function LockIcon({ size = 14 }: { size?: number }) {
   return (
@@ -172,14 +172,14 @@ export function MerchantDetail({
         {/* 단골 인증 카드 - reason은 규칙 엔진이 만든 문장을 그대로 노출 */}
         <div
           className="rounded-2xl px-4 py-4 flex items-center justify-between"
-          style={{ background: CARD_GRADIENT }}
+          style={{ background: CARD_GRADIENT, boxShadow: '0 6px 18px rgba(39,140,111,0.08)', }}
         >
-          <p className="text-[16px] font-bold leading-snug" style={{ color: '#1B2E20' }}>
+          <p className="text-[16px] font-bold leading-snug" style={{ color: '#222' }}>
             {reason}
           </p>
           <div
             className="shrink-0 ml-3 w-14 h-14 rounded-full bg-white grid place-items-center text-[11px] font-semibold text-center leading-tight shadow-sm"
-            style={{ color: PRIMARY }}
+            style={{ color: '#222', border: `2px solid ${PRIMARY}`, }}
           >
             단골
             <br />
@@ -191,7 +191,7 @@ export function MerchantDetail({
           <button
             onClick={onGoSuccessor}
             className="w-full rounded-xl py-3 text-[15px] font-semibold text-neutral-900 transition active:scale-[0.98]"
-            style={{ background: CTA_BG }}
+            style={{ background: CTA_BG, color: '#222',}}
           >
             대체 가게 찾기 →
           </button>
@@ -227,8 +227,8 @@ export function MerchantDetail({
                         boxShadow: selected.locked ? `0 0 0 2px ${ACCENT_BG}` : 'none',
                       }
                     : {
-                        background: PRIMARY,
-                        color: '#FFFFFF',
+                        background: `linear-gradient(135deg, ${PRIMARY},)`,
+                        color: '#000000',
                         boxShadow: isSelected ? `0 0 0 2px ${ACCENT_BG}` : 'none',
                       }
                 }
@@ -265,12 +265,12 @@ export function MerchantDetail({
           ) : (
             <>
               <div
-                className="w-8 h-8 shrink-0 rounded-full grid place-items-center text-[11px] font-bold text-white"
-                style={{ background: PRIMARY }}
+                className="w-8 h-8 shrink-0 rounded-full grid place-items-center text-[11px] font-bold text-black"
+                style={{ background: '#ffffff' }}
               >
                 {selected.name.slice(0, 1)}
               </div>
-              <p className="text-[13px] font-medium" style={{ color: PRIMARY }}>
+              <p className="text-[13px] font-medium" style={{ color: '#000000' }}>
                 {selected.name}
                 {selected.isMe ? ' (나)' : ''}님의 단골 지도
               </p>
@@ -328,7 +328,7 @@ export function MerchantDetail({
                   className="shrink-0 w-8 h-8 rounded-full grid place-items-center text-[12px] font-bold"
                   style={{ background: ACCENT_BG, color: PRIMARY }}
                 >
-                  {m.visitCount}
+                  {m.visitCount}회
                 </span>
               </div>
             ))}

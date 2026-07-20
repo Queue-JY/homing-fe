@@ -6,6 +6,7 @@ import { MerchantDetail } from './screens/MerchantDetail';
 import { OwnerDashboard } from './screens/OwnerDashboard';
 import { OutreachDemo } from './screens/OutreachDemo';
 import type { Region } from './types';
+import { SuccessorFinder } from './screens/SuccessorFinder';
 
 type Screen =
   | { name: 'myMap' }
@@ -13,6 +14,7 @@ type Screen =
   | { name: 'vouchedMap'; region?: Region }
   | { name: 'merchantDetail'; merchantId: number; merchantName: string; reason: string }
   | { name: 'ownerDashboard'; merchantId: number }
+  | { name: 'successorFinder' }
   | { name: 'outreachDemo'; merchantId: number; merchantName: string; message: string };
 
 // 데모/개발 중 화면 흐름을 안 타고 바로바로 확인하기 위한 스위처.
@@ -39,6 +41,10 @@ const DEV_SCREENS: { label: string; screen: Screen }[] = [
       merchantName: '행복분식',
       message: '신메뉴 마라라면 출시',
     },
+  },
+  {
+    label: '⑦ 대체가게찾기',
+    screen: { name: 'successorFinder' },
   },
 ];
 
@@ -104,6 +110,7 @@ export default function App() {
             merchantName={screen.merchantName}
             reason={screen.reason}
             onBack={() => setScreen({ name: 'vouchedMap' })}
+            onGoSuccessor={() => setScreen({ name: 'successorFinder' })}
           />
         )}
 
@@ -135,6 +142,26 @@ export default function App() {
             message={screen.message}
             regionLine="대명동 맛맛분식 아직 있어요. 시험기간마다 밤새우던 그곳에서 마라라면이 새로 나왔대요."
             onClose={() => setScreen({ name: 'ownerDashboard', merchantId: screen.merchantId })}
+          />
+        )}
+        {screen.name === 'successorFinder' && (
+          <SuccessorFinder
+            onBack={() =>
+              setScreen({
+                name: 'merchantDetail',
+                merchantId: 1,
+                merchantName: '가게 상세',
+                reason: '단골 인증 판정 근거가 여기에 표시됩니다',
+              })
+            }
+            onGoSuccessor={() =>
+              setScreen({
+                name: 'merchantDetail',
+                merchantId: 2,
+                merchantName: '대현문구',
+                reason: '산격문구 단골들이 가장 많이 이동한 가게',
+              })
+            }
           />
         )}
       </div>

@@ -26,10 +26,14 @@ export const setBadgePublic = (userId: number, merchantId: number, badgePublic: 
     .patch<BadgeResponse>(`/api/users/${userId}/merchants/${merchantId}/badge`, { badgePublic })
     .then((r) => r.data);
 
-export const getVouchedMap = (region?: string) =>
-  api
-    .get<VouchedMerchant[]>('/api/map/vouched', { params: region ? { region } : {} })
-    .then((r) => r.data);
+// ⚠️ 지금 파일럿 데이터가 전부 "산격동 경북대정문" 상권 하나뿐이라
+// regionLabel 안에 "대구"라는 문자열 자체가 없음. 그대로 region=대구로 쿼리하면
+// 백엔드가 regionLabel 부분일치로 필터링할 경우 매번 빈 배열이 옴.
+// → '대구' 탭은 파라미터 없이 전체 조회로 대체 (실제 데이터가 늘어나 지역이 다양해지면 이 분기 제거해도 됨)
+export const getVouchedMap = (region?: string) => {
+  const params = region && region !== '대구' ? { region } : {};
+  return api.get<VouchedMerchant[]>('/api/map/vouched', { params }).then((r) => r.data);
+};
 
 export const getSuccessors = (merchantId: number, limit = 5) =>
   api

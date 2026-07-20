@@ -36,6 +36,7 @@ export interface SuccessorMerchant {
   lat: number;
   lng: number;
   movedCount: number;
+  officialSuccessor: boolean;
 }
 
 export interface PotentialCustomer {
@@ -44,6 +45,7 @@ export interface PotentialCustomer {
   era: string;
   currentRegion: string;
   sharedRegulars: number;
+  sharedMerchants: number;
 }
 
 export interface OutreachSummary {

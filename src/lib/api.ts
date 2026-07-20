@@ -52,6 +52,9 @@ export const getTrend = (merchantId: number, periods = 6, periodDays = 30) =>
     .then((r) => r.data);
 
 // 데모에서 "연결하기" 버튼 → 지도가 채워지는 연출용. subjectId는 "u0" 고정.
+// ⚠️ 반복 호출 절대 금지: 같은 subjectId로 여러 번 부르면 거래(Transaction)가 계속 쌓여서
+// visitCount가 부풀려짐. 서버 에러는 안 나고 데이터가 조용히 오염되니, 이 함수를 쓰는 곳에서는
+// 버튼을 disabled 처리하거나 한 번 호출 후 다시 못 누르게 막아야 함.
 export const onboardMyData = () =>
   api
     .post<OnboardResponse>('/api/mydata/onboard', {
@@ -66,3 +69,6 @@ export const onboardMyData = () =>
 
 // ⚠️ 이 API는 "소식 보내기 대상 집계"만 내려줌. 실제 문자/알림 발송 API는 백엔드에 없음.
 // 전송하기 버튼을 눌러도 이 API가 뭘 보내주지 않는다 - UI에서 반드시 데모 시뮬레이션임을 표시할 것.
+// ⚠️ 참고: 전역 예외 처리기(@ControllerAdvice)가 없어서 잘못된 userId/merchantId를 보내도
+// 400/404가 아니라 무조건 500으로 옴. 에러 핸들링할 때 상태 코드로 "내가 잘못 보낸 요청"과
+// "서버가 죽은 것"을 구분할 수 없다는 점 유의.

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getVouchedMap } from '../lib/api';
 import { ScreenHeader } from '../components/ScreenHeader';
-import { MascotAvatar, UserAvatar } from '../components/Avatar';
+import { UserAvatar } from '../components/Avatar';
 import { SUPPORTED_REGIONS, type Region, type VouchedMerchant } from '../types';
 
 export function VouchedMap({
@@ -13,7 +13,7 @@ export function VouchedMap({
   onBack: () => void;
   onSelectMerchant: (merchantId: number) => void;
 }) {
-  const [region, setRegion] = useState<Region>(initialRegion ?? '대구');
+  const [region, setRegion] = useState<Region>(initialRegion ?? '서울');
   const [merchants, setMerchants] = useState<VouchedMerchant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -29,16 +29,7 @@ export function VouchedMap({
 
   return (
     <div className="min-h-full bg-white">
-      <div className="flex items-center justify-between px-4 pt-3">
-        <ScreenHeader title="단골 보증 지도" onBack={onBack} />
-      </div>
-
-      <div className="flex justify-center -mt-2 mb-1">
-        <div className="flex -space-x-2">
-          <MascotAvatar size={36} />
-          <MascotAvatar size={36} />
-        </div>
-      </div>
+      <ScreenHeader title="단골 보증 지도" onBack={onBack} />
 
       {/* 지역 탭 */}
       <div className="flex gap-2 px-4 pb-3 overflow-x-auto no-scrollbar">

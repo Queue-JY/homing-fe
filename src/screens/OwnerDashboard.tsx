@@ -37,9 +37,6 @@ export function OwnerDashboard({
 
   return (
     <div className="min-h-full bg-white">
-      <div className="flex items-center px-2 pt-1">
-        <MascotAvatar size={28} />
-      </div>
       <ScreenHeader title="사장님 대시보드" onBack={onBack} />
 
       <div className="px-4 space-y-3 pb-8">

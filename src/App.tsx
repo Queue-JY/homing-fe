@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MyMap } from './screens/MyMap';
 import { RegionModal } from './screens/RegionModal';
 import { VouchedMap } from './screens/VouchedMap';
 import { MerchantDetail } from './screens/MerchantDetail';
@@ -7,6 +8,7 @@ import { OutreachDemo } from './screens/OutreachDemo';
 import type { Region } from './types';
 
 type Screen =
+  | { name: 'myMap' }
   | { name: 'modal' }
   | { name: 'vouchedMap'; region?: Region }
   | { name: 'merchantDetail'; merchantId: number; merchantName: string; reason: string }
@@ -16,10 +18,11 @@ type Screen =
 // 데모/개발 중 화면 흐름을 안 타고 바로바로 확인하기 위한 스위처.
 // 배포 전에는 이 배열 + 아래 스위처 바(<div className="... bg-neutral-800">)만 지우면 됨.
 const DEV_SCREENS: { label: string; screen: Screen }[] = [
-  { label: '① 모달', screen: { name: 'modal' } },
-  { label: '② 보증지도', screen: { name: 'vouchedMap', region: '서울' } },
+  { label: '① 나의 지도', screen: { name: 'myMap' } },
+  { label: '② 모달', screen: { name: 'modal' } },
+  { label: '③ 보증지도', screen: { name: 'vouchedMap', region: '서울' } },
   {
-    label: '③ 가게상세',
+    label: '④ 가게상세',
     screen: {
       name: 'merchantDetail',
       merchantId: 1,
@@ -27,9 +30,9 @@ const DEV_SCREENS: { label: string; screen: Screen }[] = [
       reason: '3년간 47회 방문 · 재학시절 터줏대감',
     },
   },
-  { label: '④ 사장님대시보드', screen: { name: 'ownerDashboard', merchantId: 1 } },
+  { label: '⑤ 사장님대시보드', screen: { name: 'ownerDashboard', merchantId: 1 } },
   {
-    label: '⑤ 소식보내기결과',
+    label: '⑥ 소식보내기결과',
     screen: {
       name: 'outreachDemo',
       merchantId: 1,
@@ -58,6 +61,20 @@ export default function App() {
       </div>
 
       <div className="w-full max-w-[420px] flex-1 bg-white overflow-y-auto">
+        {screen.name === 'myMap' && (
+          <MyMap
+            onBack={() => setScreen({ name: 'modal' })}
+            onSelectMerchant={(id) =>
+              setScreen({
+                name: 'merchantDetail',
+                merchantId: id,
+                merchantName: '가게 상세',
+                reason: '단골 인증 판정 근거가 여기에 표시됩니다',
+              })
+            }
+          />
+        )}
+
         {screen.name === 'modal' && (
           <RegionModal
             onOpenMap={(region) => setScreen({ name: 'vouchedMap', region: region as Region })}

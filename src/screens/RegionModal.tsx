@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getMyMap } from '../lib/api';
 import { useDetectedRegion } from '../hooks/useDetectedRegion';
-import { MascotAvatar } from '../components/Avatar';
 import { REGION_GREETINGS, type MyMapMerchant } from '../types';
 
 const DEMO_USER_ID = 1;
@@ -44,12 +43,9 @@ export function RegionModal({
         }}
       >
         <div className="flex items-start gap-3">
-          <MascotAvatar size={44} />
-          <div className="flex-1 pt-1">
             <p className="font-greeting text-[20px] font-bold text-neutral-900 leading-snug">
               {greeting}
             </p>
-          </div>
         </div>
 
         <p className="mt-3 text-[15px] text-neutral-700 leading-relaxed">

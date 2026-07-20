@@ -13,7 +13,7 @@ export function RegionModal({
   onOpenMap: (region: string) => void;
   onDismiss: () => void;
 }) {
-  const { region, status } = useDetectedRegion();
+  const { region } = useDetectedRegion();
   const [merchant, setMerchant] = useState<MyMapMerchant | null>(null);
   const [loading, setLoading] = useState(true);
 

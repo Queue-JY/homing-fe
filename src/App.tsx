@@ -101,7 +101,6 @@ export default function App() {
 
         {screen.name === 'merchantDetail' && (
           <MerchantDetail
-            merchantId={screen.merchantId}
             merchantName={screen.merchantName}
             reason={screen.reason}
             onBack={() => setScreen({ name: 'vouchedMap' })}

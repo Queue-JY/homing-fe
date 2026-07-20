@@ -17,12 +17,10 @@ const DEMO_REGULARS = [
 const DEMO_MORE_COUNT = 31;
 
 export function MerchantDetail({
-  merchantId,
   merchantName,
   reason,
   onBack,
 }: {
-  merchantId: number;
   merchantName: string;
   reason: string;
   onBack: () => void;

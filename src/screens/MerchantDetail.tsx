@@ -100,7 +100,7 @@ const DEMO_OTHER_MAP: Record<string, DemoMerchant[]> = {
 
 const PAGE_BG = '#ffffff';
 const CARD_GRADIENT = 'linear-gradient(135deg,#EAFBE0,#F3FBEF)';
-const PRIMARY = '#1F5B36'; // 진한 그린 (텍스트/포인트)
+const PRIMARY = '#64ac7e'; // 진한 그린 (텍스트/포인트)
 const ACCENT_BG = '#DDF3CE'; // 활성 상태 배경
 const MUTED = '#8FA88C'; // 보조 텍스트
 const BORDER_SOFT = '#E1EEDA';

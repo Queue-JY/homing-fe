@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { MyMap } from './screens/MyMap';
 import { RegionModal } from './screens/RegionModal';
+import { DepartureModal } from './screens/DepartureModal';
 import { VouchedMap } from './screens/VouchedMap';
 import { MerchantDetail } from './screens/MerchantDetail';
 import { OwnerDashboard } from './screens/OwnerDashboard';
@@ -10,7 +11,8 @@ import { NoticeModal } from './screens/NoticeModal';
 import type { Region } from './types';
 
 type Screen =
-  | { name: 'regionModal' }
+  | { name: 'departureModal' }
+  | { name: 'visitorModal' }
   | { name: 'myMap' }
   | { name: 'successorFinder' }
   | { name: 'vouchedMap'; region?: Region }
@@ -23,8 +25,8 @@ type FlowKey = typeof FLOWS[number];
 
 // 각 시나리오의 시작 화면
 const FLOW_ENTRY: Record<FlowKey, Screen> = {
-  출향인: { name: 'regionModal' },
-  외지인: { name: 'vouchedMap' },
+  출향인: { name: 'departureModal' },
+  외지인: { name: 'visitorModal' },
   소상공인: { name: 'ownerDashboard', merchantId: 1 },
 };
 
@@ -58,16 +60,23 @@ export default function App() {
           </div>
         )}
 
-        {screen?.name === 'regionModal' && (
-          <RegionModal
+        {screen?.name === 'departureModal' && (
+          <DepartureModal
             onOpenMap={() => setScreen({ name: 'myMap' })}
             onDismiss={() => setScreen({ name: 'myMap' })}
           />
         )}
 
+        {screen?.name === 'visitorModal' && (
+          <RegionModal
+            onOpenMap={(region) => setScreen({ name: 'vouchedMap', region: region as Region })}
+            onDismiss={() => setScreen({ name: 'vouchedMap' })}
+          />
+        )}
+
         {screen?.name === 'myMap' && (
           <MyMap
-            onBack={() => setScreen({ name: 'regionModal' })}
+            onBack={() => setScreen({ name: 'departureModal' })}
             onSelectMerchant={() => setScreen({ name: 'successorFinder' })}
           />
         )}
@@ -89,7 +98,7 @@ export default function App() {
         {screen?.name === 'vouchedMap' && (
           <VouchedMap
             initialRegion={screen.region}
-            onBack={() => startFlow('외지인')}
+            onBack={() => setScreen({ name: 'visitorModal' })}
             onSelectMerchant={(id) =>
               setScreen({
                 name: 'merchantDetail',

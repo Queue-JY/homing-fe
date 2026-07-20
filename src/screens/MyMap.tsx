@@ -15,6 +15,7 @@ export function MyMap({ onBack, onSelectMerchant }: { onBack: () => void; onSele
 
   const [status, setStatus] = useState('불러오는 중...');
   const [isError, setIsError] = useState(false);
+  const [merchants, setMerchants] = useState<MyMapMerchant[]>([]);
 
   // ⚠️ 마이데이터 온보딩 상태 - "연결됨"은 세션 로컬 state로만 관리.
   // 서버(MockMyDataClient)가 같은 subjectId("u0")에 대해 중복 체크 없이
@@ -23,7 +24,7 @@ export function MyMap({ onBack, onSelectMerchant }: { onBack: () => void; onSele
   const [onboardStatus, setOnboardStatus] = useState<'idle' | 'connecting' | 'done' | 'error'>('idle');
 
   const drawMarkers = useCallback(
-    (merchants: MyMapMerchant[]) => {
+    (list: MyMapMerchant[]) => {
       const kakao = window.kakao;
       const map = mapRef.current;
       if (!kakao || !map) return;
@@ -35,7 +36,7 @@ export function MyMap({ onBack, onSelectMerchant }: { onBack: () => void; onSele
       let placed = 0;
       const bounds = new kakao.maps.LatLngBounds();
 
-      merchants.forEach((m) => {
+      list.forEach((m) => {
         if (m.lat == null || m.lng == null) return;
         const position = new kakao.maps.LatLng(m.lat, m.lng);
         const marker = new kakao.maps.Marker({ position, map });
@@ -59,14 +60,15 @@ export function MyMap({ onBack, onSelectMerchant }: { onBack: () => void; onSele
       });
 
       if (placed > 0) map.setBounds(bounds);
-      setStatus(`가게 ${merchants.length}곳 중 마커 ${placed}개 표시됨 (마커를 눌러 상세 확인)`);
+      setStatus(`가게 ${list.length}곳 중 마커 ${placed}개 표시됨 (마커를 눌러 상세 확인)`);
     },
     [onSelectMerchant]
   );
 
   const fetchAndDraw = useCallback(async () => {
-    const merchants = await getMyMap(DEMO_USER_ID);
-    drawMarkers(merchants);
+    const list = await getMyMap(DEMO_USER_ID);
+    setMerchants(list);
+    drawMarkers(list);
   }, [drawMarkers]);
 
   useEffect(() => {
@@ -108,29 +110,13 @@ export function MyMap({ onBack, onSelectMerchant }: { onBack: () => void; onSele
       setOnboardStatus('error');
     }
   };
-  const DEMO_CLOSED_MERCHANTS = [
-  { merchantId: 501, name: '산격문구', closedDate: '2022.11', visitCount: 14 },
-];
+
+  // 더미 없이 실제 my-map 응답의 active 필드로 폐업 가게만 걸러냄
+  const closedMerchants = merchants.filter((m) => !m.active);
 
   return (
     <div className="min-h-full bg-white flex flex-col">
       <ScreenHeader title="나의 지도" onBack={onBack} />
-      <div className="px-4 py-4 border-t border-neutral-100">
-        <p className="text-[13px] font-medium text-neutral-500 mb-2">폐업한 단골 가게</p>
-        {DEMO_CLOSED_MERCHANTS.map((m) => (
-          <button
-            key={m.merchantId}
-            onClick={() => onSelectMerchant(m.merchantId)}
-            className="w-full flex items-center justify-between rounded-xl bg-neutral-50 px-4 py-3 text-left"
-          >
-            <div>
-              <p className="text-[15px] font-semibold text-neutral-500 line-through">{m.name}</p>
-              <p className="text-[12px] text-neutral-400">{m.closedDate} 폐업 · 방문 {m.visitCount}회</p>
-            </div>
-            <span className="text-[12px] text-neutral-400">대체 가게 찾기 →</span>
-          </button>
-        ))}
-      </div>
 
       <div className="px-4 pb-3">
         <button
@@ -155,7 +141,7 @@ export function MyMap({ onBack, onSelectMerchant }: { onBack: () => void; onSele
         )}
       </div>
 
-      <div className="relative flex-1">
+      <div className="relative">
         <div
           className={`absolute top-3 left-3 z-10 px-3 py-2 rounded-lg text-[12px] shadow ${
             isError ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-white text-neutral-600'
@@ -163,8 +149,29 @@ export function MyMap({ onBack, onSelectMerchant }: { onBack: () => void; onSele
         >
           {status}
         </div>
-        <div ref={mapDivRef} className="w-full h-full min-h-[420px]" />
+        <div ref={mapDivRef} className="w-full min-h-[420px]" />
       </div>
+
+      {closedMerchants.length > 0 && (
+        <div className="px-4 py-4 border-t border-neutral-100">
+          <p className="text-[13px] font-medium text-neutral-500 mb-2">폐업한 단골 가게</p>
+          {closedMerchants.map((m) => (
+            <button
+              key={m.merchantId}
+              onClick={() => onSelectMerchant(m.merchantId)}
+              className="w-full flex items-center justify-between rounded-xl bg-neutral-50 px-4 py-3 text-left mb-2 last:mb-0"
+            >
+              <div>
+                <p className="text-[15px] font-semibold text-neutral-500 line-through">{m.name}</p>
+                <p className="text-[12px] text-neutral-400">
+                  방문 {m.visitCount}회 · {m.regionLabel}
+                </p>
+              </div>
+              <span className="text-[12px] text-neutral-400 shrink-0 ml-3">대체 가게 찾기 →</span>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

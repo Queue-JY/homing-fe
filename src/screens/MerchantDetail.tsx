@@ -25,7 +25,6 @@ const DEMO_REGULARS = [
 ];
 
 const DEMO_MORE_COUNT = 29;
-const DEMO_REGULAR_COUNT = 34;
 
 const DEMO_OTHER_MAP: Record<string, DemoMerchant[]> = {
   민준: [
@@ -104,7 +103,6 @@ const PRIMARY = '#6EB58C';
 const MUTED = '#7E8B84';
 const ACCENT_BG = '#DDF3CE';
 const BORDER_SOFT = '#E8EFEA';
-const CTA_BG = '#FFF4C7';
 const LOCK_BG = '#F4F5F4';
 const LOCK_ICON = '#9EA7A1';
 
@@ -130,7 +128,6 @@ export function MerchantDetail({
   merchantName,
   reason,
   onBack,
-  onGoSuccessor,
 }: {
   merchantName: string;
   reason: string;
@@ -187,22 +184,9 @@ export function MerchantDetail({
           </div>
         </div>
 
-        <div className="mt-4">
-          <button
-            onClick={onGoSuccessor}
-            className="w-full rounded-xl py-3 text-[15px] font-semibold text-neutral-900 transition active:scale-[0.98]"
-            style={{ background: CTA_BG, color: '#222',}}
-          >
-            대체 가게 찾기 →
-          </button>
-        </div>
-
         <div className="flex items-baseline justify-between mt-6 mb-2.5">
           <p className="text-[13px] font-medium" style={{ color: MUTED }}>
-            이 가게 단골
-          </p>
-          <p className="text-[12px] font-semibold" style={{ color: PRIMARY }}>
-            {DEMO_REGULAR_COUNT}명
+            이 가게 단골 리스트
           </p>
         </div>
 

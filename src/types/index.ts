@@ -82,7 +82,7 @@ export interface BadgeResponse {
 
 // 17개 광역자치단체 기준. 백엔드가 지역 목록 API를 안 주므로 FE 상수로 고정.
 export const SUPPORTED_REGIONS = [
-  '서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종',
+  '대구', '부산', '서울', '인천', '광주', '대전', '울산', '세종',
   '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주',
 ] as const;
 export type Region = (typeof SUPPORTED_REGIONS)[number];

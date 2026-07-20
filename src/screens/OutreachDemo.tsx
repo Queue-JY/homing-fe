@@ -1,3 +1,4 @@
+import wallpaper from '../assets/wallpaper.jpg';
 import { useEffect, useState } from 'react';
 
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
@@ -30,7 +31,7 @@ export function OutreachDemo({
   return (
     <div
       className="min-h-full flex flex-col items-center pt-14 px-6 relative cursor-pointer"
-      style={{ background: 'linear-gradient(180deg,#F7E9B0 0%,#F7E9B0 60%,#A9D98C 100%)' }}
+      style={{ backgroundImage: `url(${wallpaper})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', }}
       onClick={onClose}
     >
       <span className="absolute top-3 right-4 text-[10px] tracking-wide text-black/40 font-medium">

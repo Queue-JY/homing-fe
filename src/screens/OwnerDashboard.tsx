@@ -120,7 +120,7 @@ export function OwnerDashboard({
 
             <button
               onClick={() => onSend(message || '신메뉴 마라라면 출시')}
-              className="mt-8 w-full rounded-xl py-4 text-xl font-semibold active:scale-[0.98] transition"
+              className="mt-4 w-full rounded-xl py-4 text-[16px] font-semibold active:scale-[0.98] transition"
               style={{ background: '#FFE9A9' }}
             >
               {sendCount}명에게 전송하기

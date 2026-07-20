@@ -88,8 +88,8 @@ export default function App() {
               setScreen({
                 name: 'merchantDetail',
                 merchantId: 2,
-                merchantName: '대현문구',
-                reason: '산격문구 단골들이 가장 많이 이동한 가게',
+                merchantName: '대현분식',
+                reason: '산격분식 단골들이 가장 많이 이동한 가게',
               })
             }
           />

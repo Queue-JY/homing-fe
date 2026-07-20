@@ -18,7 +18,7 @@ export function SuccessorFinder({
           style={{ background: 'linear-gradient(135deg, #E0F5E9, #F0FAF4)' }}
         >
           <p className="font-bold text-neutral-900">
-            산격문구는 2022년 11월에 폐업했습니다
+            행복분식은 2022년 11월에 폐업했습니다
           </p>
           <p className="mt-1 text-neutral-700">
             당신은 14회 방문한 단골이었습니다
@@ -41,7 +41,7 @@ export function SuccessorFinder({
               2
             </div>
             <p className="text-[15px] text-neutral-800 leading-relaxed">
-              그중 <span className="font-semibold">6명</span>이 지금도 대구에서 문구를 삽니다
+              그중 <span className="font-semibold">6명</span>이 지금도 대구에서 떡볶이를 삽니다
             </p>
           </div>
 
@@ -50,7 +50,7 @@ export function SuccessorFinder({
               3
             </div>
             <p className="text-[15px] text-neutral-800 leading-relaxed">
-              같은 골목의 <span className="font-semibold">대현문구</span>로 가장 많이 옮겼습니다
+              같은 골목의 <span className="font-semibold">대현분식</span>로 가장 많이 옮겼습니다
             </p>
           </div>
         </div>
@@ -61,7 +61,7 @@ export function SuccessorFinder({
           className="w-full mt-8 rounded-2xl py-4 text-[17px] font-semibold text-neutral-900 active:scale-[0.985] transition"
           style={{ background: '#FFF9D9' }}
         >
-          대현문구 보러가기 →
+          대현분식 보러가기 →
         </button>
       </div>
     </div>

@@ -9,6 +9,7 @@ import type {
   OnboardResponse,
   BadgeResponse,
 } from '../types';
+import { DEMO_VOUCHED_FALLBACK } from './demoVouchedFallback';
 
 // /api/** 전체가 CORS 전면 허용이라 프록시/인터셉터 없이 바로 baseURL만 잡으면 됨.
 export const api = axios.create({
@@ -30,9 +31,15 @@ export const setBadgePublic = (userId: number, merchantId: number, badgePublic: 
 // regionLabel 안에 "대구"라는 문자열 자체가 없음. 그대로 region=대구로 쿼리하면
 // 백엔드가 regionLabel 부분일치로 필터링할 경우 매번 빈 배열이 옴.
 // → '대구' 탭은 파라미터 없이 전체 조회로 대체 (실제 데이터가 늘어나 지역이 다양해지면 이 분기 제거해도 됨)
-export const getVouchedMap = (region?: string) => {
+export const getVouchedMap = async (region?: string) => {
   const params = region && region !== '대구' ? { region } : {};
-  return api.get<VouchedMerchant[]>('/api/map/vouched', { params }).then((r) => r.data);
+  const data = await api.get<VouchedMerchant[]>('/api/map/vouched', { params }).then((r) => r.data);
+
+  // 실제 응답이 비어있고, 데모용 프리셋이 있는 지역이면 그걸로 폴백
+  if (data.length === 0 && region && DEMO_VOUCHED_FALLBACK[region]) {
+    return DEMO_VOUCHED_FALLBACK[region];
+  }
+  return data;
 };
 
 export const getSuccessors = (merchantId: number, limit = 5) =>
@@ -70,9 +77,3 @@ export const onboardMyData = () =>
       era: '20s',
     })
     .then((r) => r.data);
-
-// ⚠️ 이 API는 "소식 보내기 대상 집계"만 내려줌. 실제 문자/알림 발송 API는 백엔드에 없음.
-// 전송하기 버튼을 눌러도 이 API가 뭘 보내주지 않는다 - UI에서 반드시 데모 시뮬레이션임을 표시할 것.
-// ⚠️ 참고: 전역 예외 처리기(@ControllerAdvice)가 없어서 잘못된 userId/merchantId를 보내도
-// 400/404가 아니라 무조건 500으로 옴. 에러 핸들링할 때 상태 코드로 "내가 잘못 보낸 요청"과
-// "서버가 죽은 것"을 구분할 수 없다는 점 유의.

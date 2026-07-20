@@ -62,7 +62,6 @@ export function OutreachDemo({
       </div>
 
       <div className="flex-1" />
-      <div className="mb-10 text-[64px]">🐦</div>
     </div>
   );
 }

@@ -108,10 +108,29 @@ export function MyMap({ onBack, onSelectMerchant }: { onBack: () => void; onSele
       setOnboardStatus('error');
     }
   };
+  const DEMO_CLOSED_MERCHANTS = [
+  { merchantId: 501, name: '산격문구', closedDate: '2022.11', visitCount: 14 },
+];
 
   return (
     <div className="min-h-full bg-white flex flex-col">
       <ScreenHeader title="나의 지도" onBack={onBack} />
+      <div className="px-4 py-4 border-t border-neutral-100">
+        <p className="text-[13px] font-medium text-neutral-500 mb-2">폐업한 단골 가게</p>
+        {DEMO_CLOSED_MERCHANTS.map((m) => (
+          <button
+            key={m.merchantId}
+            onClick={() => onSelectMerchant(m.merchantId)}
+            className="w-full flex items-center justify-between rounded-xl bg-neutral-50 px-4 py-3 text-left"
+          >
+            <div>
+              <p className="text-[15px] font-semibold text-neutral-500 line-through">{m.name}</p>
+              <p className="text-[12px] text-neutral-400">{m.closedDate} 폐업 · 방문 {m.visitCount}회</p>
+            </div>
+            <span className="text-[12px] text-neutral-400">대체 가게 찾기 →</span>
+          </button>
+        ))}
+      </div>
 
       <div className="px-4 pb-3">
         <button

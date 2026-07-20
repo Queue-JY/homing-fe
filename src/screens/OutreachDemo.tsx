@@ -7,14 +7,12 @@ const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 // 이 화면은 피칭 데모용으로 "발송됐다면 이렇게 보일 것"을 프론트에서만 재현한 목업.
 // 실제 서비스에서는 이 화면 대신 진짜 푸시 발송 연동이 필요함.
 export function OutreachDemo({
-  message,
-  merchantName,
-  regionLine,
+  greeting,
+  body,
   onClose,
 }: {
-  message: string;
-  merchantName: string;
-  regionLine: string; // 예: "대명동 맛맛분식 아직 있어요. 시험기간마다 밤새우던 그곳에서..."
+  greeting: string; 
+  body: string; 
   onClose: () => void;
 }) {
   const [now, setNow] = useState(new Date());
@@ -52,12 +50,8 @@ export function OutreachDemo({
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-[13px] font-semibold text-neutral-900">iM Bank</p>
-          <p className="text-[13.5px] text-neutral-700 leading-snug mt-0.5">
-            {regionLine || `${merchantName} 소식이 도착했어요.`}
-          </p>
-          {message && (
-            <p className="text-[13.5px] text-neutral-700 leading-snug mt-0.5">{message}</p>
-          )}
+          <p className="text-[13.5px] font-semibold text-neutral-900 mt-0.5">{greeting}</p>
+          <p className="text-[13.5px] text-neutral-700 leading-snug mt-0.5">{body}</p>
         </div>
       </div>
 

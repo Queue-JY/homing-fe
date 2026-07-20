@@ -10,7 +10,7 @@ export function OwnerDashboard({
 }: {
   merchantId: number;
   onBack: () => void;
-  onSend: (message: string) => void;
+  onSend: (greeting: string, body: string) => void;
 }) {
   const [outreach, setOutreach] = useState<OutreachSummary | null>(null);
   const [potential, setPotential] = useState<PotentialCustomer[] | null>(null);
@@ -34,6 +34,12 @@ export function OwnerDashboard({
   const sendCount =
     (sendDeparted ? outreach?.totalDeparted ?? 0 : 0) +
     (sendPotential ? potential?.length ?? 0 : 0);
+
+  // 미리보기와 전송 화면이 항상 같은 문구를 쓰도록 여기서 한 번만 조립
+  const previewGreeting = '대구 왔는교? 반갑데이!';
+  const previewBody = `대명동 맛맛분식에 방문해보세요. 많은 사람들이 시험기간마다 밤새우던 그곳에서 ${
+    message || '신메뉴 마라라면'
+  }이 새로 나왔대요.`;
 
   return (
     <div className="min-h-full bg-white">
@@ -104,23 +110,20 @@ export function OwnerDashboard({
                 style={{ background: '#F6F1DC' }}
               >
                 <p className="font-bold text-[16px] tracking-tight">
-                  대구 왔는교? 반갑데이!
+                  {previewGreeting}
                 </p>
                 <p className="mt-3 leading-relaxed text-[15.5px] text-neutral-800">
-                  대명동 맛맛분식에 방문해보세요.
-                  많은 사람들이 시험기간마다 밤새우던
-                  그곳에서{' '}
-                  <span className="font-medium">
-                    {message || '신메뉴 마라라면'}
-                  </span>
-                  이 새로 나왔대요.
+                  {previewBody}
                 </p>
               </div>
+              <p className="mt-2 text-center text-[12px] text-neutral-400">
+                미리보기를 확인하고 아래 버튼을 눌러 전송해보세요
+              </p>
             </div>
 
             <button
-              onClick={() => onSend(message || '신메뉴 마라라면 출시')}
-              className="mt-4 w-full rounded-xl py-4 text-[16px] font-semibold active:scale-[0.98] transition"
+              onClick={() => onSend(previewGreeting, previewBody)}
+              className="mt-2 w-full rounded-xl py-4 text-[16px] font-semibold active:scale-[0.98] transition"
               style={{ background: '#FFE9A9' }}
             >
               {sendCount}명에게 전송하기

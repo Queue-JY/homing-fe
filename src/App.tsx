@@ -21,13 +21,13 @@ type Screen =
   | { name: 'ownerDashboard'; merchantId: number }
   | { name: 'outreachDemo'; merchantId: number; greeting: string; body: string };
 
-const FLOWS = ['출향인', '외지인', '소상공인'] as const;
+const FLOWS = ['출향인', '방문객', '소상공인'] as const;
 type FlowKey = typeof FLOWS[number];
 
 // 각 시나리오의 시작 화면
 const FLOW_ENTRY: Record<FlowKey, Screen> = {
   출향인: { name: 'departureModal' },
-  외지인: { name: 'visitorModal' },
+  방문객: { name: 'visitorModal' },
   소상공인: { name: 'ownerDashboard', merchantId: 1 },
 };
 
@@ -85,7 +85,7 @@ export default function App() {
                 시나리오를 선택해주세요
               </p>
               <p className="text-xs text-neutral-400">
-                좌측 날개 메뉴에서 [출향인 / 외지인 / 소상공인]을 클릭하세요.
+                좌측 날개 메뉴에서 [출향인 / 방문객 / 소상공인]을 클릭하세요.
               </p>
             </div>
           )}

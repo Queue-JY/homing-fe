@@ -12,7 +12,7 @@ export function NoticeModal({ onClose }: { onClose: () => void }) {
           위 3가지 버튼을 눌러<br />원하는 시나리오를 체험해보세요
         </p>
         <div className="mt-4 flex justify-center gap-3 text-[13px] font-medium text-neutral-600">
-          <span>출향인</span>·<span>외지인</span>·<span>소상공인</span>
+          <span>출향인</span>·<span>방문객</span>·<span>소상공인</span>
         </div>
         <button
           onClick={onClose}

@@ -38,10 +38,12 @@ export default function App() {
   const startFlow = (key: FlowKey) => setScreen(FLOW_ENTRY[key]);
 
   return (
-    <div className="w-full h-screen flex justify-center items-center bg-neutral-100 p-4 overflow-hidden">
-      {/* 중앙 메인 컨테이너 (좌측 날개 스위처 + 모바일 프레임) */}
-      <div className="relative flex items-start gap-4 h-full max-h-[880px]">
+    // 💡 overflow-hidden 대신 overflow-x-auto를 적용하여 좁은 화면에서 가로 스크롤 허용
+    <div className="w-full h-screen flex items-center bg-neutral-100 p-4 overflow-x-auto">
+      {/* 중앙 메인 컨테이너 (min-w-max로 컨텐츠 최소 너비 보장 & mx-auto로 대화면 중앙 정렬) */}
+      <div className="relative flex items-start gap-4 h-full max-h-[880px] mx-auto min-w-max">
         
+        {/* 👈 스마트폰 좌측 바깥 날개 스위처 메뉴 (shrink-0으로 줄어듦 방지) */}
         <div className="flex flex-col gap-2 p-3 bg-white rounded-2xl shadow-md border border-neutral-200 shrink-0">
           <p className="text-[11px] font-bold text-neutral-400 px-2 pt-1 uppercase tracking-wider">
             시나리오
@@ -68,8 +70,8 @@ export default function App() {
           ))}
         </div>
 
-        {/* 📱 중앙 스마트폰 뷰 영역 */}
-        <div className="w-[390px] h-full bg-white rounded-3xl shadow-xl overflow-y-auto relative border border-neutral-200 flex flex-col">
+        {/* 📱 중앙 스마트폰 뷰 영역 (shrink-0 추가) */}
+        <div className="w-[390px] h-full bg-white rounded-3xl shadow-xl overflow-y-auto relative border border-neutral-200 flex flex-col shrink-0">
           {showNotice && <NoticeModal onClose={() => setShowNotice(false)} />}
 
           {!screen && !showNotice && (

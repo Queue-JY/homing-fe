@@ -37,110 +37,139 @@ export default function App() {
   const startFlow = (key: FlowKey) => setScreen(FLOW_ENTRY[key]);
 
   return (
-    <div className="w-full h-screen flex flex-col items-center bg-neutral-200">
-      {/* 상단 스위처: 3개 시나리오만 노출 */}
-      <div className="w-full flex gap-2 justify-center px-3 py-2 bg-neutral-800">
-        {FLOWS.map((key) => (
-          <button
-            key={key}
-            onClick={() => startFlow(key)}
-            className="px-4 py-1.5 rounded-full bg-neutral-700 text-neutral-100 text-[13px] font-medium"
-          >
-            {key}
-          </button>
-        ))}
-      </div>
+    <div className="w-full h-screen flex justify-center items-center bg-neutral-100 p-4 overflow-hidden">
+      {/* 중앙 메인 컨테이너 (좌측 날개 스위처 + 모바일 프레임) */}
+      <div className="relative flex items-start gap-4 h-full max-h-[880px]">
+        
+        <div className="flex flex-col gap-2 p-3 bg-white rounded-2xl shadow-md border border-neutral-200 shrink-0">
+          <p className="text-[11px] font-bold text-neutral-400 px-2 pt-1 uppercase tracking-wider">
+            시나리오
+          </p>
+          {FLOWS.map((key) => (
+            <button
+              key={key}
+              onClick={() => startFlow(key)}
+              className="px-4 py-2.5 rounded-xl text-[13px] font-semibold text-left transition active:scale-95 flex items-center justify-between"
+              style={{
+                color: '#2A5235',
+                backgroundColor: '#F0F8EC',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#E2F5D9';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#F0F8EC';
+              }}
+            >
+              <span>{key}</span>
+              <span className="text-[10px] text-[#5C8A67] ml-2">→</span>
+            </button>
+          ))}
+        </div>
 
-      <div className="w-full max-w-[420px] flex-1 bg-white overflow-y-auto relative">
-        {showNotice && <NoticeModal onClose={() => setShowNotice(false)} />}
+        {/* 📱 중앙 스마트폰 뷰 영역 */}
+        <div className="w-[390px] h-full bg-white rounded-3xl shadow-xl overflow-y-auto relative border border-neutral-200 flex flex-col">
+          {showNotice && <NoticeModal onClose={() => setShowNotice(false)} />}
 
-        {!screen && !showNotice && (
-          <div className="py-24 text-center text-neutral-400 text-sm">
-            위 버튼을 눌러 시나리오를 선택해주세요
-          </div>
-        )}
+          {!screen && !showNotice && (
+            <div className="flex-1 flex flex-col items-center justify-center p-4 text-center">
+              <img 
+                src="src/assets/logo.png" 
+                alt="앱 로고" 
+                className="w-45 h-45 mb-4 object-contain" 
+              />
+              <p className="font-semibold text-neutral-700 text-base mb-1">
+                시나리오를 선택해주세요
+              </p>
+              <p className="text-xs text-neutral-400">
+                좌측 날개 메뉴에서 [출향인 / 외지인 / 소상공인]을 클릭하세요.
+              </p>
+            </div>
+          )}
 
-        {screen?.name === 'departureModal' && (
-          <DepartureModal
-            onOpenMap={() => setScreen({ name: 'myMap' })}
-            onDismiss={() => setScreen({ name: 'myMap' })}
-          />
-        )}
+          {screen?.name === 'departureModal' && (
+            <DepartureModal
+              onOpenMap={() => setScreen({ name: 'myMap' })}
+              onDismiss={() => setScreen({ name: 'myMap' })}
+            />
+          )}
 
-        {screen?.name === 'visitorModal' && (
-          <RegionModal
-            onOpenMap={(region) => setScreen({ name: 'vouchedMap', region: region as Region })}
-            onDismiss={() => setScreen({ name: 'vouchedMap' })}
-          />
-        )}
+          {screen?.name === 'visitorModal' && (
+            <RegionModal
+              onOpenMap={(region) => setScreen({ name: 'vouchedMap', region: region as Region })}
+              onDismiss={() => setScreen({ name: 'vouchedMap' })}
+            />
+          )}
 
-        {screen?.name === 'myMap' && (
-          <MyMap
-            onBack={() => setScreen({ name: 'departureModal' })}
-            onSelectMerchant={() => setScreen({ name: 'successorFinder' })}
-          />
-        )}
+          {screen?.name === 'myMap' && (
+            <MyMap
+              onBack={() => setScreen({ name: 'departureModal' })}
+              onSelectMerchant={() => setScreen({ name: 'successorFinder' })}
+            />
+          )}
 
-        {screen?.name === 'successorFinder' && (
-          <SuccessorFinder
-            onBack={() => setScreen({ name: 'myMap' })}
-            onGoSuccessor={() =>
-              setScreen({
-                name: 'merchantDetail',
-                merchantId: 2,
-                merchantName: '대현분식',
-                reason: '행복분식 단골들이 가장 많이 이동한 가게',
-              })
-            }
-          />
-        )}
+          {screen?.name === 'successorFinder' && (
+            <SuccessorFinder
+              onBack={() => setScreen({ name: 'myMap' })}
+              onGoSuccessor={() =>
+                setScreen({
+                  name: 'merchantDetail',
+                  merchantId: 2,
+                  merchantName: '대현분식',
+                  reason: '행복분식 단골들이 가장 많이 이동한 가게',
+                })
+              }
+            />
+          )}
 
-        {screen?.name === 'vouchedMap' && (
-          <VouchedMap
-            initialRegion={screen.region}
-            onBack={() => setScreen({ name: 'visitorModal' })}
-            onSelectMerchant={(id) =>
-              setScreen({
-                name: 'merchantDetail',
-                merchantId: id,
-                merchantName: '가게 상세',
-                reason: '단골 인증 판정 근거가 여기에 표시됩니다',
-              })
-            }
-          />
-        )}
+          {screen?.name === 'vouchedMap' && (
+            <VouchedMap
+              initialRegion={screen.region}
+              onBack={() => setScreen({ name: 'visitorModal' })}
+              onSelectMerchant={(id) =>
+                setScreen({
+                  name: 'merchantDetail',
+                  merchantId: id,
+                  merchantName: '가게 상세',
+                  reason: '단골 인증 판정 근거가 여기에 표시됩니다',
+                })
+              }
+            />
+          )}
 
-        {screen?.name === 'merchantDetail' && (
-          <MerchantDetail
-            merchantName={screen.merchantName}
-            reason={screen.reason}
-            onBack={() => setScreen({ name: 'vouchedMap' })}
-            onGoSuccessor={() => setScreen({ name: 'successorFinder' })}
-          />
-        )}
+          {screen?.name === 'merchantDetail' && (
+            <MerchantDetail
+              merchantName={screen.merchantName}
+              reason={screen.reason}
+              onBack={() => setScreen({ name: 'vouchedMap' })}
+              onGoSuccessor={() => setScreen({ name: 'successorFinder' })}
+            />
+          )}
 
-        {screen?.name === 'ownerDashboard' && (
-          <OwnerDashboard
-            merchantId={screen.merchantId}
-            onBack={() => startFlow('소상공인')}
-            onSend={(greeting, body) =>
-              setScreen({
-                name: 'outreachDemo',
-                merchantId: screen.merchantId,
-                greeting,
-                body,
-              })
-            }
-          />
-        )}
+          {screen?.name === 'ownerDashboard' && (
+            <OwnerDashboard
+              merchantId={screen.merchantId}
+              onBack={() => startFlow('소상공인')}
+              onSend={(greeting, body) =>
+                setScreen({
+                  name: 'outreachDemo',
+                  merchantId: screen.merchantId,
+                  greeting,
+                  body,
+                })
+              }
+            />
+          )}
 
-        {screen?.name === 'outreachDemo' && (
-          <OutreachDemo
-            greeting={screen.greeting}
-            body={screen.body}
-            onClose={() => setScreen({ name: 'ownerDashboard', merchantId: screen.merchantId })}
-          />
-        )}
+          {screen?.name === 'outreachDemo' && (
+            <OutreachDemo
+              greeting={screen.greeting}
+              body={screen.body}
+              onClose={() => setScreen({ name: 'ownerDashboard', merchantId: screen.merchantId })}
+            />
+          )}
+        </div>
+
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import { OutreachDemo } from './screens/OutreachDemo';
 import { SuccessorFinder } from './screens/SuccessorFinder';
 import { NoticeModal } from './screens/NoticeModal';
 import type { Region } from './types';
+import logoImg from './assets/logo.png';
 
 type Screen =
   | { name: 'departureModal' }
@@ -74,7 +75,7 @@ export default function App() {
           {!screen && !showNotice && (
             <div className="flex-1 flex flex-col items-center justify-center p-4 text-center">
               <img 
-                src="src/assets/logo.png" 
+                src={logoImg}
                 alt="앱 로고" 
                 className="w-45 h-45 mb-4 object-contain" 
               />

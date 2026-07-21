@@ -10,10 +10,12 @@ import { SuccessorFinder } from './screens/SuccessorFinder';
 import { NoticeModal } from './screens/NoticeModal';
 import type { Region } from './types';
 import logoImg from './assets/logo.png';
+import { CommunityPage } from './screens/CommunityPage';
 
 type Screen =
   | { name: 'departureModal' }
   | { name: 'visitorModal' }
+  | { name: 'community' }
   | { name: 'myMap' }
   | { name: 'successorFinder' }
   | { name: 'vouchedMap'; region?: Region }
@@ -21,14 +23,14 @@ type Screen =
   | { name: 'ownerDashboard'; merchantId: number }
   | { name: 'outreachDemo'; merchantId: number; greeting: string; body: string };
 
-const FLOWS = ['출향인', '방문객', '소상공인'] as const;
+const FLOWS = ['출향인', '방문객', '소상공인', '커뮤니티'] as const;
 type FlowKey = typeof FLOWS[number];
 
-// 각 시나리오의 시작 화면
 const FLOW_ENTRY: Record<FlowKey, Screen> = {
   출향인: { name: 'departureModal' },
   방문객: { name: 'visitorModal' },
   소상공인: { name: 'ownerDashboard', merchantId: 1 },
+  커뮤니티: { name: 'community' },
 };
 
 export default function App() {
@@ -42,7 +44,7 @@ export default function App() {
     <div className="w-full h-screen flex items-center bg-neutral-100 p-4 overflow-x-auto">
       {/* 중앙 메인 컨테이너 (min-w-max로 컨텐츠 최소 너비 보장 & mx-auto로 대화면 중앙 정렬) */}
       <div className="relative flex items-start gap-4 h-full max-h-[880px] mx-auto min-w-max">
-        
+
         {/* 👈 스마트폰 좌측 바깥 날개 스위처 메뉴 (shrink-0으로 줄어듦 방지) */}
         <div className="flex flex-col gap-2 p-3 bg-white rounded-2xl shadow-md border border-neutral-200 shrink-0">
           <p className="text-[11px] font-bold text-neutral-400 px-2 pt-1 uppercase tracking-wider">
@@ -76,16 +78,16 @@ export default function App() {
 
           {!screen && !showNotice && (
             <div className="flex-1 flex flex-col items-center justify-center p-4 text-center">
-              <img 
+              <img
                 src={logoImg}
-                alt="앱 로고" 
-                className="w-45 h-45 mb-4 object-contain" 
+                alt="앱 로고"
+                className="w-45 h-45 mb-4 object-contain"
               />
               <p className="font-semibold text-neutral-700 text-base mb-1">
                 시나리오를 선택해주세요
               </p>
               <p className="text-xs text-neutral-400">
-                좌측 날개 메뉴에서 [출향인 / 방문객 / 소상공인]을 클릭하세요.
+                좌측 날개 메뉴에서 [출향인 / 방문객 / 소상공인 / 커뮤니티]을 클릭하세요.
               </p>
             </div>
           )}
@@ -101,6 +103,20 @@ export default function App() {
             <RegionModal
               onOpenMap={(region) => setScreen({ name: 'vouchedMap', region: region as Region })}
               onDismiss={() => setScreen({ name: 'vouchedMap' })}
+            />
+          )}
+
+          {screen?.name === 'community' && (
+            <CommunityPage
+              onBack={() => startFlow('커뮤니티')}
+              onSelectMerchant={(id) =>
+                setScreen({
+                  name: 'merchantDetail',
+                  merchantId: id,
+                  merchantName: '가게 상세',
+                  reason: '단골 인증 판정 근거가 여기에 표시됩니다',
+                })
+              }
             />
           )}
 
@@ -145,7 +161,7 @@ export default function App() {
               merchantName={screen.merchantName}
               reason={screen.reason}
               onBack={() => setScreen({ name: 'vouchedMap' })}
-              onGoSuccessor={() => setScreen({ name: 'successorFinder' })}
+              onGoCommunity={() => setScreen({ name: 'community' })}
             />
           )}
 
